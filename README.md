@@ -6,3 +6,5 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/Loonz206/full-situation/badge.svg)](https://snyk.io/test/github/Loonz206/full-situation)
 
 ## Full Situation
+
+
