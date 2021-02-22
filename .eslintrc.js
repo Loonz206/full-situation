@@ -10,6 +10,8 @@ module.exports = {
     "standard",
     "plugin:react-hooks/recommended",
     "plugin:prettier/recommended",
+    "plugin:security/recommended",
+    "plugin:jsx-a11y/recommended",
   ],
   parserOptions: {
     ecmaFeatures: {
