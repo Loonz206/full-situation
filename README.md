@@ -4,6 +4,8 @@
 ![Github Actions CI](https://github.com/Loonz206/full-situation/workflows/Github%20Actions%20CI/badge.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/Loonz206/full-situation/badge.svg)](https://snyk.io/test/github/Loonz206/full-situation)
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=Loonz206_full-situation)
+
 ## Full Situation
 
 

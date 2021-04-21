@@ -13,6 +13,7 @@ dotenv.config();
 
 // Create a new Express application
 const app = express();
+app.disable("x-powered-by");
 
 const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@full-situation.7qq2i.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
 
