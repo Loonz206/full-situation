@@ -9,6 +9,7 @@ const passportConfig = require("./services/auth");
 const MongoStore = require("connect-mongo")(session);
 const schema = require("./schema/schema");
 const dotenv = require("dotenv");
+const port = process.env.PORT || 4000;
 dotenv.config();
 
 // Create a new Express application
@@ -60,7 +61,11 @@ app.use(
   })
 );
 
-app.listen(4000);
+app.listen(port, () => {
+  console.log(
+    `full-situation app listening at http://localhost:${port}/graphql`
+  );
+});
 
 // Webpack runs as a middleware.  If any request comes in for the root route ('/')
 // Webpack will respond with the output of the webpack process: an HTML file and
