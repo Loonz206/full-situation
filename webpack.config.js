@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   mode: "development",
+  devtool: "source-map",
   devServer: {
     historyApiFallback: true,
     contentBase: path.resolve(__dirname, "./dist"),
