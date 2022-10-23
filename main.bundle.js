@@ -18,11 +18,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 var App = function App() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Header__WEBPACK_IMPORTED_MODULE_1__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Hello App"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Footer__WEBPACK_IMPORTED_MODULE_2__["default"], null));
 };
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
 
 /***/ }),
@@ -39,12 +37,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
-
 var Footer = function Footer() {
   var copyright = "Full-situation was made with React | Copyright 2020-".concat(new Date().getFullYear());
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, copyright);
 };
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Footer);
 
 /***/ }),
@@ -60,7 +56,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
 
 var Header = function Header() {
   var list = [{
@@ -86,8 +81,8 @@ var Header = function Header() {
   }];
   var renderList = list.map(function (_ref) {
     var id = _ref.id,
-        link = _ref.link,
-        title = _ref.title;
+      link = _ref.link,
+      title = _ref.title;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
       key: id
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
@@ -97,7 +92,6 @@ var Header = function Header() {
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, renderList);
 };
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
 
 /***/ }),
@@ -30526,7 +30520,7 @@ module.exports = function (list, options) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("f5396958ce26e3a1cb96")
+/******/ 		__webpack_require__.h = () => ("9040ed187149ad25a0c3")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
