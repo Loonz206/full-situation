@@ -30520,7 +30520,7 @@ module.exports = function (list, options) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("83870c7733d601918258")
+/******/ 		__webpack_require__.h = () => ("f804a77b08001bbf4738")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -31000,7 +31000,10 @@ module.exports = function (list, options) {
 /******/ 				scriptUrl = document.currentScript.src;
 /******/ 			if (!scriptUrl) {
 /******/ 				var scripts = document.getElementsByTagName("script");
-/******/ 				if(scripts.length) scriptUrl = scripts[scripts.length - 1].src
+/******/ 				if(scripts.length) {
+/******/ 					var i = scripts.length - 1;
+/******/ 					while (i > -1 && !scriptUrl) scriptUrl = scripts[i--].src;
+/******/ 				}
 /******/ 			}
 /******/ 		}
 /******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
