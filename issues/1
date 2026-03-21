@@ -1,0 +1,20 @@
+### Automate lockfile updates and resolve Snyk/Dependabot PR merge blockers
+
+Several automated PRs (Snyk, Dependabot, etc.) are failing to update the package-lock.json, resulting in repeated warnings:
+
+> Failed to update the package-lock.json, please update manually before merging.
+
+This causes security and dependency update PRs to pile up without resolution. It also interferes with CI automation and overall dependency health.
+
+**What should Copilot address?**
+- Propose and implement a reliable automation for keeping lockfiles (e.g., package-lock.json) up to date whenever dependency files are updated by bots.
+- Ensure that manual intervention is not required except for genuine merge conflicts.
+- Recommend best practices for resolving lockfile update blockers for both Snyk and Dependabot PRs.
+- Suggest/test a CI automation or script that can fix this problem for this repo (such as using actions like 'dependabot-auto-merge', or custom scripts, etc).
+- Review the current open PRs (examples: #169, #168, #167, #166, #165, etc.) for a pattern in what breaks the lockfile update and include the most maintainable solution.
+
+Reference failing PR as example: https://github.com/Loonz206/full-situation/pull/169
+
+---
+
+> _Issue was created for Copilot to work on as requested in chat. If clarification or refinement is needed, please comment on this thread._
