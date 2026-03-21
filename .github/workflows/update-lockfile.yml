@@ -1,0 +1,46 @@
+name: Update Lockfile
+
+on:
+  pull_request:
+    paths:
+      - 'package.json'
+
+jobs:
+  update-lockfile:
+    runs-on: ubuntu-latest
+    # Only run for PRs from dependabot or snyk-bot to auto-update the lockfile
+    if: >
+      github.actor == 'dependabot[bot]' ||
+      github.actor == 'snyk-bot' ||
+      startsWith(github.head_ref, 'snyk-') ||
+      startsWith(github.head_ref, 'dependabot/')
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Regenerate package-lock.json
+        run: npm install --package-lock-only
+
+      - name: Commit updated lockfile
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet package-lock.json; then
+            echo "No lockfile changes to commit."
+          else
+            git add package-lock.json
+            git commit -m "chore: regenerate package-lock.json"
+            git push
+          fi
