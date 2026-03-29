@@ -1,8 +1,10 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
 
-module.exports = {
+const config = {
   user: process.env.MONGO_USER,
   password: process.env.MONGO_PASSWORD,
   dbname: process.env.MONGO_DB,
 };
+
+export default config;

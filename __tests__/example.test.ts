@@ -1,4 +1,4 @@
-const sum = (a, b) => {
+const sum = (a: number, b: number): number => {
   return a + b;
 };
 
@@ -11,7 +11,7 @@ describe("sum function", () => {
 describe("testing with jest", () => {
   describe("matchers", () => {
     test("object assignment", () => {
-      const data = { one: 1 };
+      const data: { one: number; two?: number } = { one: 1 };
       data.two = 2;
       expect(data).toEqual({ one: 1, two: 2 });
     });
@@ -106,7 +106,7 @@ describe("testing with jest", () => {
   });
 
   describe("callbacks", () => {
-    const fetchData = (callback) => {
+    const fetchData = (callback: (message: string) => void): void => {
       const message = "peanut butter";
       setTimeout(() => {
         callback(message);
@@ -115,7 +115,7 @@ describe("testing with jest", () => {
 
     // you have to add done to inform jest that callback is finished
     test("the data is peanut butter", (done) => {
-      function callback(data) {
+      function callback(data: string) {
         try {
           expect(data).toBe("peanut butter");
           done();
@@ -132,6 +132,7 @@ describe("testing with jest", () => {
     const errorMessage = "grape jelly";
     const successMessage = "peanut butter";
     const fetchData = () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve(successMessage);

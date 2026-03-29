@@ -1,7 +1,14 @@
 import React from "react";
 
-const Header = () => {
-  const list = [
+interface NavItem {
+  id: number;
+  item: string;
+  title: string;
+  link: string;
+}
+
+const Header = (): React.ReactElement => {
+  const list: NavItem[] = [
     {
       id: 0,
       item: "thing",
@@ -30,9 +37,7 @@ const Header = () => {
   const renderList = list.map(({ id, link, title }) => {
     return (
       <li key={id}>
-        <a href={link} alt={link}>
-          {title}
-        </a>
+        <a href={link}>{title}</a>
       </li>
     );
   });

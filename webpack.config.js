@@ -15,7 +15,10 @@ module.exports = {
     port: 8080,
   },
   entry: {
-    main: path.resolve(__dirname, "./src/index.js"),
+    main: path.resolve(__dirname, "./src/index.tsx"),
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js", ".jsx"],
   },
   output: {
     path: path.resolve(__dirname, "./dist"),
@@ -23,9 +26,9 @@ module.exports = {
   },
   module: {
     rules: [
-      // JavaScript
+      // JavaScript/TypeScript
       {
-        test: /\.js$/,
+        test: /\.[jt]sx?$/,
         exclude: /node_modules/,
         use: ["babel-loader"],
       },

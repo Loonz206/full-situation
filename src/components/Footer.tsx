@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = () => {
+const Footer = (): React.ReactElement => {
   const copyright = `Full-situation was made with React | Copyright 2020-${new Date().getFullYear()}`;
   return <div>{copyright}</div>;
 };
