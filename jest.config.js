@@ -25,6 +25,14 @@ module.exports = {
   // The directory where Jest should output its coverage files
   coverageDirectory: "coverage",
 
+  // An array of file extensions your modules use
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+
+  // A map from regular expressions to paths to transformers
+  transform: {
+    "^.+\\.[jt]sx?$": "babel-jest",
+  },
+
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
   //   "/node_modules/"

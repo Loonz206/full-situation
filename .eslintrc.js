@@ -12,7 +12,9 @@ module.exports = {
     "plugin:prettier/recommended",
     "plugin:security/recommended",
     "plugin:jsx-a11y/recommended",
+    "plugin:@typescript-eslint/recommended",
   ],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -20,8 +22,19 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  plugins: ["react"],
-  rules: {},
+  plugins: ["react", "@typescript-eslint"],
+  rules: {
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+  },
+  overrides: [
+    {
+      files: ["*.js", "*.jsx"],
+      rules: {
+        "@typescript-eslint/no-var-requires": "off",
+      },
+    },
+  ],
   settings: {
     react: {
       version: "detect",

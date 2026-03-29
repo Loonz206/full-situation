@@ -1,5 +1,4 @@
-const graphql = require("graphql");
-const { GraphQLObjectType, GraphQLID } = graphql;
+import { GraphQLObjectType, GraphQLID } from "graphql";
 
 const RootQueryType = new GraphQLObjectType({
   name: "RootQueryType",
@@ -8,4 +7,4 @@ const RootQueryType = new GraphQLObjectType({
   },
 });
 
-module.exports = RootQueryType;
+export default RootQueryType;

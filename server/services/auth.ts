@@ -1,19 +1,21 @@
-const mongoose = require("mongoose");
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+import mongoose from "mongoose";
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
+import { Request } from "express";
+import { IUser } from "../models/user";
 
-const User = mongoose.model("user");
+const User = mongoose.model<IUser>("user");
 
 // SerializeUser is used to provide some identifying token that can be saved
 // in the users session.  We traditionally use the 'ID' for this.
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, (user as IUser).id);
 });
 
 // The counterpart of 'serializeUser'.  Given only a user's ID, we must return
 // the user object.  This object is placed on 'req.user'.
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
+passport.deserializeUser((id: string, done) => {
+  User.findById(id, (err: Error | null, user: IUser | null) => {
     done(err, user);
   });
 });
@@ -28,23 +30,26 @@ passport.deserializeUser((id, done) => {
 // This string is provided back to the GraphQL client.
 passport.use(
   new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-    User.findOne({ email: email.toLowerCase() }, (err, user) => {
-      if (err) {
-        return done(err);
-      }
-      if (!user) {
-        return done(null, false, "Invalid Credentials");
-      }
-      user.comparePassword(password, (err, isMatch) => {
+    User.findOne(
+      { email: email.toLowerCase() },
+      (err: Error | null, user: IUser | null) => {
         if (err) {
           return done(err);
         }
-        if (isMatch) {
-          return done(null, user);
+        if (!user) {
+          return done(null, false, { message: "Invalid Credentials" });
         }
-        return done(null, false, "Invalid credentials.");
-      });
-    });
+        user.comparePassword(password, (err2, isMatch) => {
+          if (err2) {
+            return done(err2);
+          }
+          if (isMatch) {
+            return done(null, user);
+          }
+          return done(null, false, { message: "Invalid credentials." });
+        });
+      }
+    );
   })
 );
 
@@ -55,7 +60,13 @@ passport.use(
 // Notice the Promise created in the second 'then' statement.  This is done
 // because Passport only supports callbacks, while GraphQL only supports promises
 // for async code!  Awkward!
-function signup({ email, password, req }) {
+interface AuthParams {
+  email: string;
+  password: string;
+  req: Request;
+}
+
+export function signup({ email, password, req }: AuthParams): Promise<IUser> {
   const user = new User({ email, password });
   if (!email || !password) {
     throw new Error("You must provide an email and password.");
@@ -68,13 +79,13 @@ function signup({ email, password, req }) {
       }
       return user.save();
     })
-    .then((user) => {
-      return new Promise((resolve, reject) => {
-        req.logIn(user, (err) => {
+    .then((savedUser) => {
+      return new Promise<IUser>((resolve, reject) => {
+        req.logIn(savedUser, (err) => {
           if (err) {
             reject(err);
           }
-          resolve(user);
+          resolve(savedUser);
         });
       });
     });
@@ -85,18 +96,16 @@ function signup({ email, password, req }) {
 // function returns a function, as its indended to be used as a middleware with
 // Express.  We have another compatibility layer here to make it work nicely with
 // GraphQL, as GraphQL always expects to see a promise for handling async code.
-function login({ email, password, req }) {
+export function login({ email, password, req }: AuthParams): Promise<IUser> {
   return new Promise((resolve, reject) => {
     // eslint-disable-next-line node/handle-callback-err
-    passport.authenticate("local", (err, user) => {
+    passport.authenticate("local", (err: Error | null, user: IUser | false) => {
       if (!user) {
         // eslint-disable-next-line prefer-promise-reject-errors
         reject("Invalid credentials.");
+      } else {
+        req.login(user, () => resolve(user));
       }
-
-      req.login(user, () => resolve(user));
-    })({ body: { email, password } });
+    })({ body: { email, password } } as Request, {} as never, () => undefined);
   });
 }
-
-module.exports = { signup, login };

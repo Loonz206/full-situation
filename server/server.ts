@@ -1,16 +1,16 @@
-/* eslint-disable no-unused-vars */
-const express = require("express");
-const models = require("./models");
-const { graphqlHTTP } = require("express-graphql");
-const mongoose = require("mongoose");
-const session = require("express-session");
-const passport = require("passport");
-const passportConfig = require("./services/auth");
-const MongoStore = require("connect-mongo")(session);
-const schema = require("./schema/schema");
-const dotenv = require("dotenv");
-const port = process.env.PORT || 4000;
+import express from "express";
+import mongoose from "mongoose";
+import { graphqlHTTP } from "express-graphql";
+import session from "express-session";
+import passport from "passport";
+import dotenv from "dotenv";
+import "./models";
+import "./services/auth";
+import schema from "./schema/schema";
+
 dotenv.config();
+
+const port = process.env.PORT || 4000;
 
 // Create a new Express application
 const app = express();
@@ -33,11 +33,16 @@ mongoose.connection
 // the cookie and modifies the request object to indicate which user made the request
 // The cookie itself only contains the id of a session; more data about the session
 // is stored inside of MongoDB.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const MongoStore = require("connect-mongo")(session);
 app.use(
   session({
     resave: true,
     saveUninitialized: true,
     secret: "aaabbbccc",
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+    },
     store: new MongoStore({
       url: MONGO_URI,
       autoReconnect: true,
@@ -47,7 +52,7 @@ app.use(
 
 // Passport is wired into express as a middleware. When a request comes in,
 // Passport will examine the request's session (as set by the above config) and
-// assign the current user to the 'req.user' object.  See also servces/auth.js
+// assign the current user to the 'req.user' object.  See also services/auth.ts
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -70,9 +75,12 @@ app.listen(port, () => {
 // Webpack runs as a middleware.  If any request comes in for the root route ('/')
 // Webpack will respond with the output of the webpack process: an HTML file and
 // a single bundle.js output of all of our client side Javascript
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const webpackMiddleware = require("webpack-dev-middleware");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const webpack = require("webpack");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const webpackConfig = require("../webpack.config.js");
 app.use(webpackMiddleware(webpack(webpackConfig)));
 
-module.exports = app;
+export default app;

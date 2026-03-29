@@ -1,12 +1,18 @@
-/* eslint-disable no-unused-vars */
-const bcrypt = require("bcrypt-nodejs");
-const crypto = require("crypto");
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose, { Schema, Document } from "mongoose";
+import bcrypt from "bcrypt-nodejs";
+
+export interface IUser extends Document {
+  email: string;
+  password: string;
+  comparePassword(
+    candidatePassword: string,
+    cb: (err: Error | null, isMatch: boolean) => void
+  ): void;
+}
 
 // Every user has an email and password.  The password is not stored as
 // plain text - see the authentication helpers below.
-const UserSchema = new Schema({
+const UserSchema = new Schema<IUser>({
   email: String,
   password: String,
 });
@@ -17,7 +23,7 @@ const UserSchema = new Schema({
 // derived from the salted + hashed version. See 'comparePassword' to understand
 // how this is used.
 UserSchema.pre("save", function save(next) {
-  const user = this;
+  const user = this as IUser;
   if (!user.isModified("password")) {
     return next();
   }
@@ -25,10 +31,18 @@ UserSchema.pre("save", function save(next) {
     if (err) {
       return next(err);
     }
-    bcrypt.hash(user.password, salt, null, (hash) => {
-      user.password = hash;
-      next();
-    });
+    bcrypt.hash(
+      user.password,
+      salt,
+      null,
+      (err2: Error | null, hash: string) => {
+        if (err2) {
+          return next(err2);
+        }
+        user.password = hash;
+        next();
+      }
+    );
   });
 });
 
@@ -38,12 +52,16 @@ UserSchema.pre("save", function save(next) {
 // that hashed password to the one stored in the DB.  Remember that hashing is
 // a one way process - the passwords are never compared in plain text form.
 UserSchema.methods.comparePassword = function comparePassword(
-  candidatePassword,
-  cb
-) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    cb(err, isMatch);
-  });
+  candidatePassword: string,
+  cb: (err: Error | null, isMatch: boolean) => void
+): void {
+  bcrypt.compare(
+    candidatePassword,
+    this.password,
+    (err: Error | null, isMatch: boolean) => {
+      cb(err, isMatch);
+    }
+  );
 };
 
-mongoose.model("user", UserSchema);
+mongoose.model<IUser>("user", UserSchema);
