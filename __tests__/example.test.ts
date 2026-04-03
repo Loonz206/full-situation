@@ -2,6 +2,10 @@ const sum = (a: number, b: number): number => {
   return a + b;
 };
 
+function compileAndroidCode() {
+  throw new Error("you are using the wrong JDK");
+}
+
 describe("sum function", () => {
   test("should add two numbers together", () => {
     expect(sum(1, 3)).toEqual(4);
@@ -91,10 +95,6 @@ describe("testing with jest", () => {
   });
 
   describe("exceptions", () => {
-    function compileAndroidCode() {
-      throw new Error("you are using the wrong JDK");
-    }
-
     test("compiling android goes as expected", () => {
       expect(() => compileAndroidCode()).toThrow();
       expect(() => compileAndroidCode()).toThrow(Error);
@@ -142,7 +142,7 @@ describe("testing with jest", () => {
     const fetchDataWithError = () => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          reject(errorMessage);
+          reject(new Error(errorMessage));
         }, 100);
       });
     };
@@ -155,7 +155,9 @@ describe("testing with jest", () => {
 
     test("the fetch fails with an error, catch", () => {
       expect.assertions(1);
-      return fetchDataWithError().catch((e) => expect(e).toMatch(errorMessage));
+      return fetchDataWithError().catch((e: Error) =>
+        expect(e.message).toBe(errorMessage)
+      );
     });
 
     test("the data is peanut butter, resolves", () => {
@@ -163,7 +165,9 @@ describe("testing with jest", () => {
     });
 
     test("the fetch fails with an error, rejects", () => {
-      return expect(fetchDataWithError()).rejects.toMatch(errorMessage);
+      return expect(fetchDataWithError()).rejects.toMatchObject({
+        message: errorMessage,
+      });
     });
 
     test("the data is peanut butter", async () => {
@@ -176,7 +180,7 @@ describe("testing with jest", () => {
       try {
         await fetchDataWithError();
       } catch (e) {
-        expect(e).toMatch(errorMessage);
+        expect((e as Error).message).toBe(errorMessage);
       }
     });
 
@@ -185,7 +189,9 @@ describe("testing with jest", () => {
     });
 
     test("the fetch fails with an error", async () => {
-      await expect(fetchDataWithError()).rejects.toBe(errorMessage);
+      await expect(fetchDataWithError()).rejects.toMatchObject({
+        message: errorMessage,
+      });
     });
   });
 
