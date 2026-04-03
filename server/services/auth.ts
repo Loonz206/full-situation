@@ -83,7 +83,7 @@ export function signup({ email, password, req }: AuthParams): Promise<IUser> {
       return new Promise<IUser>((resolve, reject) => {
         req.logIn(savedUser, (err) => {
           if (err) {
-            reject(err);
+            return reject(err);
           }
           resolve(savedUser);
         });
@@ -101,8 +101,7 @@ export function login({ email, password, req }: AuthParams): Promise<IUser> {
     // eslint-disable-next-line node/handle-callback-err
     passport.authenticate("local", (err: Error | null, user: IUser | false) => {
       if (!user) {
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject("Invalid credentials.");
+        reject(new Error("Invalid credentials."));
       } else {
         req.login(user, () => resolve(user));
       }

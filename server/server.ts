@@ -12,6 +12,13 @@ dotenv.config();
 
 const port = process.env.PORT || 4000;
 
+if (!process.env.SESSION_SECRET) {
+  throw new Error(
+    "SESSION_SECRET environment variable is not set. Please configure it before starting the server."
+  );
+}
+const sessionSecret = process.env.SESSION_SECRET;
+
 // Create a new Express application
 const app = express();
 app.disable("x-powered-by");
@@ -39,7 +46,7 @@ app.use(
   session({
     resave: true,
     saveUninitialized: true,
-    secret: "aaabbbccc",
+    secret: sessionSecret,
     cookie: {
       secure: process.env.NODE_ENV === "production",
     },
@@ -62,7 +69,7 @@ app.use(
   "/graphql",
   graphqlHTTP({
     schema,
-    graphiql: true,
+    graphiql: process.env.NODE_ENV !== "production",
   })
 );
 
