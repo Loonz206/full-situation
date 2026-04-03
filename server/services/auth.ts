@@ -72,7 +72,7 @@ export function signup({ email, password, req }: AuthParams): Promise<IUser> {
     throw new Error("You must provide an email and password.");
   }
 
-  return User.findOne({ email })
+  return User.findOne({ email: String(email) })
     .then((existingUser) => {
       if (existingUser) {
         throw new Error("Email in use");

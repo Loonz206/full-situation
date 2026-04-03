@@ -26,7 +26,7 @@ app.disable("x-powered-by");
 const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@full-situation.7qq2i.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
 
 // Mongoose's built in promise library is deprecated, replace it with ES2015 Promise
-mongoose.Promise = global.Promise;
+mongoose.Promise = globalThis.Promise;
 
 // Connect to the mongoDB instance and log a message
 // on success or failure
